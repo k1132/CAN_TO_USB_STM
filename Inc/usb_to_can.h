@@ -25,12 +25,12 @@ void recv_mesg (uint8_t* Buf)
 		  {
 				case STATE_START_BYTE:
 					{
-						if (((*Buf & 0x11110000) >> 4) == 0xB)
+						if (((*Buf & 0b11110000) >> 4) == 0xB)
 							{
-								len = (*Buf & 0x00001111);
+								len = (*Buf & 0b00001111);
 								data[0] = 0xDD;
 								state_count = STATE_DATA_TRANSMIT;
-								CDC_Transmit_HS(&ok_const, 1);
+								//CDC_Transmit_HS(&ok_const, 1);
 							}
 						else  CDC_Transmit_HS(&repeat_const, 1);
 					}
@@ -71,7 +71,7 @@ void send_mesg (uint8_t* data, uint8_t* Buf)
 			case STATE_SEND_START_BYTE:
 				{
 					state_count = STATE_SEND_MESG;
-					len = (data[0] & 0x00001111);
+					len = (data[0] & 0b00001111);
 					CDC_Transmit_HS(&data[0], 1);
 				}
 			break;
