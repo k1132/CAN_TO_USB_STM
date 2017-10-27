@@ -21,14 +21,17 @@ uint8_t 	 data[18];
 
 void recv_mesg (uint8_t* Buf)
 {
-	switch (state_count)
+	static uint32_t counter;
+		switch (state_count)
 		  {
 				case STATE_START_BYTE:
 					{
 						if (((*Buf & 0b11110000) >> 4) == 0xB)
 							{
 								len = (*Buf & 0b00001111);
-								data[0] = 0xDD;
+								//data[0] = 0xDD;
+								crc_byte = 0;
+								counter = 0;
 								state_count = STATE_DATA_TRANSMIT;
 								//CDC_Transmit_HS(&ok_const, 1);
 							}
@@ -38,12 +41,12 @@ void recv_mesg (uint8_t* Buf)
 
 				case STATE_DATA_TRANSMIT:
 					  {
-    					  for (int i = 1; i <len ; i++ )
-								 {
-    						  	  	  data[i] = *Buf;
-    						  	  	  crc_byte = crc_byte + *Buf;
-								 }
-						  state_count = STATE_CRC_BYTE;
+						  counter++;
+						  data[counter] = *Buf;
+						  crc_byte = crc_byte ^ *Buf;
+
+    					  if (counter==len)
+    						  state_count = STATE_CRC_BYTE;
 					  }
 				break;
 
@@ -82,7 +85,7 @@ void send_mesg (uint8_t* data, uint8_t* Buf)
 					{
 						for (int i = 1; i <len ; i++ )
 							 {
-							crc_byte = crc_byte + data[i];
+							crc_byte = crc_byte ^ data[i];
 							CDC_Transmit_HS(&data[i], 1);
 							 }
 					}
