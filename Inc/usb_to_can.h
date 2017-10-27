@@ -29,11 +29,9 @@ void recv_mesg (uint8_t* Buf)
 						if (((*Buf & 0b11110000) >> 4) == 0xB)
 							{
 								len = (*Buf & 0b00001111);
-								//data[0] = 0xDD;
 								crc_byte = 0;
 								counter = 0;
 								state_count = STATE_DATA_TRANSMIT;
-								//CDC_Transmit_HS(&ok_const, 1);
 							}
 						else  CDC_Transmit_HS(&repeat_const, 1);
 					}

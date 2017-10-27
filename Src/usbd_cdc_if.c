@@ -267,12 +267,14 @@ static int8_t CDC_Control_HS  (uint8_t cmd, uint8_t* pbuf, uint16_t length)
   * @param  Len: Number of data received (in bytes)
   * @retval Result of the operation: USBD_OK if all operations are OK else USBD_FAIL
   */
+uint8_t data1[16];
 static int8_t CDC_Receive_HS (uint8_t* Buf, uint32_t *Len)
 {
 	for( uint32_t i=0;i < Len; i++)
+	{
 		if (state_count != (STATE_SEND_MESG)|(STATE_SEND_START_BYTE)) recv_mesg (&Buf[i]);
 		else send_mesg((1, 2, 3, 4, 5, 6, 7, 8, 9), Buf);
-
+	}
 		USBD_CDC_SetRxBuffer(&hUsbDeviceHS, &Buf[0]);
 	    USBD_CDC_ReceivePacket(&hUsbDeviceHS);
 
