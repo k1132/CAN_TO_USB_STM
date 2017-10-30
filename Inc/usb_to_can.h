@@ -1,4 +1,5 @@
 #include "usbd_cdc_if.h"
+#include "usbd_cdc_if.h"
 
 #define STATE_START_BYTE   		1
 #define STATE_DATA_TRANSMIT 	2
@@ -54,11 +55,15 @@ void recv_mesg (uint8_t* Buf)
 									 {
 									 	 CDC_Transmit_HS(&ok_const, 1);
 									 	 state_count = STATE_FINISH;
+									 	 	 	// USBD_CDC_SetRxBuffer(&hUsbDeviceHS, &Buf[0]);
+									 	 	 	 //USBD_CDC_ReceivePacket(&hUsbDeviceHS);
 									 }
 								 else if (crc_byte != *Buf)
 									 {
 									  	 CDC_Transmit_HS(&repeat_const, 1);
 									  	 state_count = STATE_START_BYTE;
+									  	 	 	 //USBD_CDC_SetRxBuffer(&hUsbDeviceHS, &Buf[0]);
+									  	 	 	 //USBD_CDC_ReceivePacket(&hUsbDeviceHS);
 									 }
 							  }
 				break;
