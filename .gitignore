@@ -1,6 +1,11 @@
 ﻿# Все файлы с расширением:
-*.exe 
-*.d 
-*.o
-bin
+.settings
 Debug
+startup
+.cproject
+.mxproject
+.progect
+STM_CAN.ioc
+STM_CAN DEBUG.cfg
+STM32F429I-DISCO.xml
+STM32F429ZITx_FLASH.ld
