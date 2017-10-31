@@ -3,6 +3,8 @@
 #define APP_RX_DATA_SIZE  4
 #define APP_TX_DATA_SIZE  4
 
+#include "usb_interface.h"
+
 uint8_t UserRxBufferHS[APP_RX_DATA_SIZE];
 uint8_t UserTxBufferHS[APP_TX_DATA_SIZE];
 

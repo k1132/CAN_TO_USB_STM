@@ -1,11 +1,8 @@
 ﻿# Все файлы с расширением:
-.settings
+*.exe 
+*.d 
+*.o
+.setting
+bin
 Debug
 startup
-.cproject
-.mxproject
-.project
-STM_CAN.ioc
-STM_CAN DEBUG.cfg
-STM32F429I-DISCO.xml
-STM32F429ZITx_FLASH.ld
