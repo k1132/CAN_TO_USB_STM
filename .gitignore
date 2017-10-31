@@ -1,8 +1,12 @@
 ﻿# Все файлы с расширением:
-*.exe 
-*.d 
-*.o
 .settings
-bin
 Debug
+Release
 startup
+.cproject
+.mxproject
+.project
+*.cfg
+*.ioc
+*.xml
+*.ld
