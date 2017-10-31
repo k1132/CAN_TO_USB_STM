@@ -24,13 +24,21 @@ uint8_t output_buf[OUTPUT_BUFF_SIZE];
 uint8_t usb_analyze_buff_flag = USB_ANALYSE_EMPTY;
 uint8_t usb_analyze_buff[USB_ANALYZE_BUFF_SIZE];
 uint32_t usb_analyze_buff_length;
-
-
-inline void send_repeat();
-inline void send_ok();
+uint8_t usb_ok_repeat_flag = USB_NONE;
 
 void usb_analyze()
 {
+	if (usb_ok_repeat_flag == USB_OK)
+	{
+		send_ok();
+		usb_ok_repeat_flag=USB_NONE;
+	}
+	if (usb_ok_repeat_flag == USB_REPEAT)
+	{
+		send_repeat();
+		usb_ok_repeat_flag=USB_NONE;
+	}
+
 	usb_analyze_buff_flag = USB_ANALYSE_BUSY;
 	switch (input_buf[0])
 	{
@@ -57,7 +65,7 @@ void recv_mesg (uint8_t *buf, uint32_t Len)
 			}
 			else
 			{
-				send_repeat();
+				usb_ok_repeat_flag = USB_REPEAT;
 				return;
 			}
 			break;
@@ -71,7 +79,7 @@ void recv_mesg (uint8_t *buf, uint32_t Len)
 		case USB_RS_CRC:
 			if (buf[i] == resv_crc)
 			{
-				send_ok();
+				usb_ok_repeat_flag = USB_OK;
 				//ANALYZE DATA
 				memset(usb_analyze_buff,0,sizeof(uint8_t)*USB_ANALYZE_BUFF_SIZE);
 				memcpy(usb_analyze_buff,input_buf,recv_lengt);
@@ -81,7 +89,7 @@ void recv_mesg (uint8_t *buf, uint32_t Len)
 			}
 			else
 			{
-				send_repeat();
+				usb_ok_repeat_flag = USB_REPEAT;
 				resv_state = USB_RS_START;
 				return;
 			}
@@ -113,5 +121,6 @@ void send_mesg (uint8_t *Buf, uint32_t Len)
 	result = USBD_BUSY;
 	while (result == USBD_BUSY)
 		result = CDC_Transmit_HS(output_buf,Len+2);	//	PROFIT
+	// сделать проверку на повтор
 
 }

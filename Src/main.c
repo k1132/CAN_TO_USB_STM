@@ -142,7 +142,7 @@ void _Error_Handler(char * file, int line)
   /* User can add his own implementation to report the HAL error return state */
   while(1) 
   {
-	  if (usb_analyze_buff_flag == USB_ANALYSE_HAVE_A_MESSAGE)
+	  if (usb_analyze_buff_flag == USB_ANALYSE_HAVE_A_MESSAGE || usb_ok_repeat_flag != USB_NONE)
 	  		  usb_analyze();
   }
   /* USER CODE END Error_Handler_Debug */ 
